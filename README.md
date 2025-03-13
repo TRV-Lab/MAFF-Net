@@ -5,14 +5,18 @@
 </div>
 <div align="center">   
 
-[![IEEE RA-L](https://img.shields.io/badge/IEEE%20RA--L-PDF-blue?style=flat&logo=IEEE&logoColor=white)](https://ieeexplore.ieee.org/document/XXXXXXX)
+[![IEEE RA-L](https://img.shields.io/badge/IEEE%20RA--L-PDF-blue?style=flat&logo=IEEE&logoColor=white)](https://ieeexplore.ieee.org/document/10923711/)
 
 </div>
 
 ## 📰 News
-- ✨ **2025.2.27**: RA-L Accepted
 
 ---
+
+- 🔔 **2025.3.12**：[Early Access](https://ieeexplore.ieee.org/document/10923711/)
+
+- ✨ **2025.2.27**: RA-L Accepted
+
 
 ## 📝 Abstract
 
@@ -36,11 +40,11 @@ Finally, fused BEV features are aggregated with clustered point cloud features a
 
 ---
 
-step 1. Refer to [Install.md](./docs/Guidance/Install.md) to install the environment.
+step 1. Refer to [install.md](./docs/guidance/install.md) to install the environment.
 
-step 2. Refer to [dataset.md](./docs/Guidance/dataset.md) to prepare View-of-delft (VoD) and TJ4DRadSet datasets.
+step 2. Refer to [dataset.md](./docs/guidance/dataset.md) to prepare View-of-delft (VoD) and TJ4DRadSet datasets.
 
-step 3. Refer to [train_and_eval.md](./docs/Guidance/train_and_eval.md) for training and evaluation.
+step 3. Refer to [train_and_test.md](./docs/guidance/train_and_test.md) for training and testing.
 
 ## 📊 Model Zoo
 
@@ -53,7 +57,7 @@ We offer the model on VoD and TJ4DRadset.
 |  TJ4DRadSet  |  [MAFF-Net_TJ.yaml](tools/cfgs/MAFF-Net/MAFF-Net_TJ.yaml)   | [Link](https://drive.google.com/drive/folders/1zSbldzARH41y5O5aBYeg7BOc_uiAHXhD?usp=sharing) |
 
 
-## 🙏 Acknowledgments
+## 🙏 Acknowledgment
 
 ---
 Many thanks to the open-source repositories:
@@ -67,10 +71,11 @@ If you find our work valuable for your research, please consider citing our pape
 ```shell
 
 @ARTICLE{Bi_MAFF,
-  author={Xin Bi, Caien Weng, Panpan Tong, Baojie Fan and Arno Eichberge},
+  author={Bi, Xin and Weng, Caien and Tong, Panpan and Fan, Baojie and Eichberge, Arno},
   journal={IEEE Robotics and Automation Letters}, 
-  title={MAFF-Net: Enhancing 3D Object Detection with 4D Radar via Multi-Assist Feature Fusion}, 
-  year={2025}}
+  title={MAFF-Net: Enhancing 3D Object Detection With 4D Radar Via Multi-Assist Feature Fusion}, 
+  year={2025},
+  doi={10.1109/LRA.2025.3550707}}
 
 ```
 
