@@ -11,23 +11,15 @@
 
 ## 📰 News
 
----
-
 - 🔔 **2025.3.12**：[Early Access](https://ieeexplore.ieee.org/document/10923711/)
 
 - ✨ **2025.2.27**: RA-L Accepted
 
-
 ## 📝 Abstract
-
----
 
 Perception systems are crucial for the safe operation of autonomous vehicles, particularly for 3D object detection. While LiDAR-based methods are limited by adverse weather conditions, 4D radars offer promising all-weather capabilities. However, 4D radars introduce challenges such as extreme sparsity, noise, and limited geometric information in point clouds. To address these issues, we propose MAFF-Net, a novel multi-assist feature fusion network specifically designed for 3D object detection using a single 4D radar. We introduce a sparsity pillar attention (SPA) module to mitigate the effects of sparsity while ensuring a sufficient receptive field. Additionally, we design the cluster query cross-attention (CQCA) module, which uses velocity-based clustered features as queries in the cross-attention fusion process. This helps the network enrich feature representations of potential objects while reducing measurement errors caused by angular resolution and multipath effects. Furthermore, we develop a cylindrical denoising assist (CDA) module to reduce noise interference, improving the accuracy of 3D bounding box predictions. Experiments on the VoD and TJ4DRadSet datasets demonstrate that MAFF-Net achieves state-of-the-art performance, outperforming 16-layer LiDAR systems and operating at over 17.9 FPS, making it suitable for real-time detection in autonomous vehicles.
 
-
 ## ⚙️ Method
-
----
 
 ![Overall framework](./docs/pics/method.jpg)
 
@@ -38,8 +30,6 @@ Finally, fused BEV features are aggregated with clustered point cloud features a
 
 ## 📜 Getting Started
 
----
-
 step 1. Refer to [install.md](./docs/guidance/install.md) to install the environment.
 
 step 2. Refer to [dataset.md](./docs/guidance/dataset.md) to prepare View-of-delft (VoD) and TJ4DRadSet datasets.
@@ -48,7 +38,6 @@ step 3. Refer to [train_and_test.md](./docs/guidance/train_and_test.md) for trai
 
 ## 📊 Model Zoo
 
----
 We offer the model on VoD and TJ4DRadset.
 
 |   Dataset    |                           Config                            |                                        Model Weights                                         | 
@@ -59,7 +48,6 @@ We offer the model on VoD and TJ4DRadset.
 
 ## 🙏 Acknowledgment
 
----
 Many thanks to the open-source repositories:
 - [OpenPCDet](https://github.com/open-mmlab/OpenPCDet)
 
