@@ -24,7 +24,7 @@ Perception systems are crucial for the safe operation of autonomous vehicles, pa
 ![Overall framework](./docs/pics/method.jpg)
 
 ***Overview of the proposed MAFF-Net.*** *MAFF-Net consists of three components: the main branch, the assisted branch, and the detection head.
-In the main branch, we apply sparse pillar attention (SPA) to the BEV features generated from the raw point cloud using a pillar-based method \cite{Lang2019}, ensuring global interaction and a sufficient receptive field.
+In the main branch, we apply sparse pillar attention (SPA) to the BEV features generated from the raw point cloud using a pillar-based method, ensuring global interaction and a sufficient receptive field.
 The assisted branch introduces clustering query cross-attention (CQCA), using clustering feature assistance (CFA) to generate BEV queries for cross-attention fusion (CAF), which helps reduce noise and identify potential objects. We also design cylindrical denoising assistance (CDA), a sampling strategy inspired by cylindrical constraints, to filter noise and background points using the proposal's positional information.
 Finally, fused BEV features are aggregated with clustered point cloud features at the keypoints' locations, and a multi-task detection head predicts the 3D bounding boxes.*
 
