@@ -99,25 +99,6 @@ class TJDatasetRadar(DatasetTemplate):
         return points
         # return np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, 7)
 
-    def get_pseudo(self, idx):
-        lidar_file = self.root_split_path / 'pseudo_radar' / ('%s.bin' % idx)
-        assert lidar_file.exists()
-        # print("idx",idx)
-        # print(lidar_file)
-        number_of_channels = 10  # ['x', 'y', 'z']
-        points = np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, number_of_channels)
-
-        # replace the list values with statistical values; for x, y, z and time, use 0 and 1 as means and std to avoid normalization
-        means = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # 'x', 'y', 'z', 'rcs', 'v_r', 'v_r_comp', 'time'
-        stds = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  # 'x', 'y', 'z', 'rcs', 'v_r', 'v_r_comp', 'time'
-
-        # we then norm the channels
-        points = (points - means) / stds
-        # points[:,2] = 0
-        # print("00000000000000")
-        # print(points[0])
-        return points
-
     def crop_image(self, input_dict):
         W, H = input_dict["ori_shape"]
         img = input_dict["camera_imgs"]
@@ -189,64 +170,6 @@ class TJDatasetRadar(DatasetTemplate):
         assert label_file.exists()
         return object3d_kitti.get_objects_from_label(label_file)
 
-    def get_depth_map(self, idx):
-        """
-        Loads depth map for a sample
-        Args:
-            idx: str, Sample index
-        Returns:
-            depth: (H, W), Depth map
-        """
-        depth_file = self.root_split_path / 'depth_2' / ('%s.png' % idx)
-        assert depth_file.exists()
-        depth = io.imread(depth_file)
-        depth = depth.astype(np.float32)
-        depth /= 256.0
-        return depth
-
-    def point_depth_map(self, input_dict):
-        points = np.copy(input_dict["points"])
-        a = np.where(points[:, 0] >= 0)
-        points = points[a]
-        lidar2image = input_dict["lidar2image"][0]
-        img_points = self.points_to_image(points[:, 0:3], lidar2image)
-        image = np.array(input_dict["camera_imgs"]) / 255
-        # pointcloud1 = np.copy(input_dict['points'])
-        # pointcloud = pointcloud1[:, 0:3]
-        # pointcloud = np.hstack([pointcloud, np.ones([pointcloud.shape[0], 1])])
-        # rotation = input_dict["lidar2camera"][0][:3, :3]
-        # translation = input_dict["lidar2camera"][0][:3, 3]
-        # distortion = np.array([[0, 0, 0, 0]], dtype="float")
-        # camera = input_dict["camera_intrinsics"][0][:3, :3]
-
-        # transform = input_dict["lidar2camera"][0]
-        # for i in range(pointcloud.shape[0]):
-        #     pointcloud[i] = np.dot(transform, pointcloud[i].reshape(4, -1)).reshape(-1, 4)
-        #
-        # pointcloud = pointcloud[:, :3]
-        # a = np.where(pointcloud[:, 2] >= 0)
-        # pointcloud = pointcloud[a]
-        # rotation = np.array([0, 0, 0], dtype="float").reshape(3, 1)
-        # translation = np.array([0, 0, 0], dtype="float").reshape(1, 3)
-        #
-        # reTransform_2 = cv2.projectPoints(pointcloud, rotation, translation, camera, distortion)
-        # reTransform_2 = reTransform_2[0][:, 0].astype(int)
-        pixel = img_points[:, 0:2].astype(int)
-        filter = np.where((pixel[:, 0] < 1936) & (pixel[:, 1] < 1216) & (pixel[:, 0] >= 0) & (pixel[:, 1] >= 0))
-        pixel = pixel[filter]
-        depth = points[:, 0].reshape(-1, 1)[filter]
-        point_feature = points[:, 3:7].reshape(-1, 4)[filter]
-        example_radar_points = np.hstack([depth, point_feature, pixel])
-        depth_image = np.full((image.shape[0], image.shape[1], 5), 0)
-        depth_image[pixel[:, 1], pixel[:, 0], :] = example_radar_points[:, 0:5]
-        depth_image_rgb = np.concatenate([depth_image, image], axis=2)
-        # plt.scatter(pixel[:, 0], pixel[:, 1], c='r', alpha=0.8, s=2, cmap='jet')
-        # plt.imshow(image)
-        # plt.show()
-        # depth_image = depth_image.transpose(2, 0, 1)
-        input_dict['point_depth_map'] = depth_image_rgb
-        return input_dict
-
     def show_image(self, window_name, image, size_wh=None, location_xy=None):
 
         if size_wh is not None:
@@ -296,132 +219,6 @@ class TJDatasetRadar(DatasetTemplate):
                     row_idx += 1
                 img_y = y_start + row_idx * (y_offset + y_padding)
         cv2.waitKey()
-
-    def image_depth_to_point(self, input_dict):
-
-        depth = input_dict["fusion_image_depth"]
-        calib = input_dict["calib"]
-        rows, cols = depth.shape
-        c, r = np.meshgrid(np.arange(cols), np.arange(rows))
-        # one = np.full(depth.shape, 1)
-        points = np.stack([c, r, depth])
-        points = points.reshape(3, -1)
-        points = points.T
-        # img2lidar = input_dict["image2lidar"]
-        # cloud1 = self.image_to_points(points, img2lidar)
-        # cloud2 = np.hstack(cloud1[:, 0:2], input_dict["fusion_image_depth_rgb"].reshape(-1, 8))
-        # cloud = np.dot(points, img2lidar).reshape(-1, 4)[:, 0:3]
-        cloud = calib.project_image_to_velo(points)
-        fusion_image_depth_rgb = input_dict["fusion_image_depth_rgb"].reshape(-1, 8)
-        cloud2 = np.concatenate(
-            [fusion_image_depth_rgb[:, 0].reshape(-1, 1), cloud[:, 1:3], fusion_image_depth_rgb[:, 1:]], axis=1)
-        valid = (cloud[:, 0] > 0) & (cloud[:, 2] < 3) & (cloud[:, 2] > -4)
-        input_dict["pseudo_points"] = cloud2[valid]
-        return input_dict
-
-    def pseudo_point_select(self, input_dict):
-
-        pseudo_points = np.copy(input_dict["pseudo_points"])
-        points = np.copy(input_dict["points"][:, 0:3])
-        ids = []
-        for centroid in points:
-            distances = np.linalg.norm(pseudo_points - centroid, axis=1).reshape(-1)
-            pos = np.where(distances < 0.1)[0]
-            ids.append(pos)
-        # ids = self.compute_distances(points, pseudo_points)
-        new_ids = np.concatenate(ids, axis=0).ravel()
-        new_ids1 = self.remove_duplicates(new_ids)
-
-        input_dict["pseudo_points"] = pseudo_points[new_ids1]
-        return input_dict
-
-    def pseudo_point_select2(self, input_dict):
-
-        pseudo_points = torch.from_numpy(np.copy(input_dict["pseudo_points"])).cuda()
-        points = torch.from_numpy(np.copy(input_dict["points"][:, 0:3])).cuda()
-        ids = []
-        for centroid in points:
-            distances = torch.sqrt(torch.sum((pseudo_points[:, 0:3] - centroid) ** 2, dim=1)).reshape(-1)
-            pos = torch.where(distances < 0.2)[0]
-            ids.append(pos)
-        # ids = self.compute_distances(points, pseudo_points)
-        new_ids = torch.ravel(torch.cat(ids, dim=0))
-        new_ids1 = self.remove_duplicates(new_ids)
-
-        input_dict["pseudo_points_select"] = pseudo_points[new_ids1].cpu().numpy()
-        return input_dict
-
-    def remove_duplicates(self, arr):
-        return list(set(arr))
-
-    def compute_distances(self, points, pseudo_points):
-        ids = []
-        N = pseudo_points.shape[0]
-        distances = np.zeros((N,))
-        for centroid in points:
-            for i in range(N):
-                dx = pseudo_points[i, 0] - centroid[0]
-                dy = pseudo_points[i, 1] - centroid[1]
-                dz = pseudo_points[i, 2] - centroid[2]
-                distances[i] = np.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
-            pos = np.where(distances < 0.25)[0]
-            ids.append(pos)
-            # nearest_indices = np.argsort(distances)[:10]
-
-        return ids
-
-    def create_pseudo_point(self, index):
-
-        sample_idx = index
-        points = self.get_lidar(sample_idx)
-        calib = self.get_calib(sample_idx)
-        get_item_list = self.dataset_cfg.get('GET_ITEM_LIST',
-                                             ['points'])  # 与kitti_dataset.yaml中GET_ITEM_LIST: ["points"]一样
-
-        input_dict = {
-            'points': points,
-            'frame_id': sample_idx,
-            'calib': calib,
-        }
-
-        if "points" in get_item_list:
-            points = self.get_lidar(sample_idx)
-            input_dict['points'] = points
-
-        if "calib_matricies" in get_item_list:
-            # input_dict["trans_lidar_to_cam"], input_dict["trans_cam_to_img"] = kitti_utils.calib_to_matricies(calib)
-            input_dict["lidar2camera"], input_dict["camera_intrinsics"], input_dict["camera2lidar"], input_dict[
-                "lidar2image"] = kitti_utils.calib_to_matricies(calib)
-
-        if "images" in get_item_list:
-            input_dict['images'] = self.get_image(sample_idx)
-            input_dict['camera_imgs'] = self.get_camera_image(sample_idx)
-            input_dict["ori_shape"] = input_dict['camera_imgs'].size
-            input_dict = self.crop_image(input_dict)
-        if "points_rgb" in get_item_list:
-            points_rgb = self.get_points_in_image_with_rgb(input_dict)
-            input_dict["points_rgb"] = points_rgb
-        if "depth_maps" in get_item_list:
-            input_dict['depth_maps'] = self.get_depth_map(sample_idx)
-        if "image_depth" in get_item_list:
-            print(sample_idx)
-            input_dict['camera_imgs'] = self.get_camera_image(sample_idx)
-            input_dict = self.point_depth_map(input_dict)
-            input_dict = self.fusion_depth_map(input_dict)
-            input_dict = self.image_depth_to_point(input_dict)
-            # show_point(input_dict["points"], input_dict["pseudo_points"])
-            input_dict = self.pseudo_point_select2(input_dict)
-            fusion_points = np.concatenate((input_dict['points_rgb'], input_dict['pseudo_points_select']), axis=0)
-            # show_point(input_dict["points_rgb"], input_dict["pseudo_points"])
-            # path = self.root_split_path / 'pseudo_radar' / ('%s.bin' % sample_idx)
-            # with open(path, 'wb') as f:
-            #     input_dict['pseudo_points'].astype(np.float32).tofile(f)
-            path1 = self.root_split_path / 'fusion_points_rgb' / ('%s.bin' % sample_idx)
-            with open(path1, 'wb') as f:
-                fusion_points.astype(np.float32).tofile(f)
-            # path2 = self.root_split_path / 'points_rgb' / ('%s.bin' % sample_idx)
-            # with open(path2, 'wb') as f:
-            #     input_dict['pseudo_points'].astype(np.float32).tofile(f)
 
     def get_calib(self, idx):
         calib_file = self.root_split_path / 'calib' / ('%s.txt' % idx)
@@ -719,7 +516,6 @@ class TJDatasetRadar(DatasetTemplate):
         evaluation_result.update(kitti_eval.get_official_eval_result(eval_gt_annos, eval_det_annos, current_class))
         results = evaluation_result
         ap_result_str = self.print_str("Results: \n"
-                                       f"Entire annotated area: \n"
                                        f"Car: mAP3d: {results['entire_area']['Car_3d_all']}, mAPbev:{results['entire_area']['Car_bev_all']} \n"
                                        f"Pedestrian: mAP3d: {results['entire_area']['Pedestrian_3d_all']}, mAPbev: {results['entire_area']['Pedestrian_bev_all']} \n"
                                        f"Cyclist: mAP3d: {results['entire_area']['Cyclist_3d_all']}, mAPbev: {results['entire_area']['Cyclist_bev_all']} \n"
@@ -789,21 +585,6 @@ class TJDatasetRadar(DatasetTemplate):
             #     points = points[fov_flag]
             input_dict['points'] = points
 
-        if "dbscan_points" in get_item_list:
-            dbscan1 = DBSCAN(eps=1, min_samples=12)
-            points_xyv = np.concatenate([points[:, 0:2], points[:, 5].reshape(-1, 1)], axis=1)
-            labels1 = dbscan1.fit_predict(points_xyv)
-            points_dbscan = np.concatenate([points, labels1.reshape(-1, 1)], axis=1)
-            input_dict['points'] = points_dbscan
-
-        # if "pseudo_points" in get_item_list:
-        #     points = self.get_pseudo(sample_idx)
-        #     if self.dataset_cfg.FOV_POINTS_ONLY:
-        #         pts_rect = calib.lidar_to_rect(points[:, 0:3])
-        #         fov_flag = self.get_fov_flag(pts_rect, img_shape, calib)
-        #         points = points[fov_flag]
-        #     input_dict['points'] = points
-
         if "calib_matricies" in get_item_list:
             # input_dict["trans_lidar_to_cam"], input_dict["trans_cam_to_img"] = kitti_utils.calib_to_matricies(calib)
             input_dict["lidar2camera"], input_dict["camera_intrinsics"], input_dict["camera2lidar"], input_dict[
@@ -818,16 +599,6 @@ class TJDatasetRadar(DatasetTemplate):
         if "points_rgb" in get_item_list:
             points_rgb = self.get_points_in_image_with_rgb(input_dict)
             input_dict["points_rgb"] = points_rgb
-
-        if "depth_maps" in get_item_list:
-            input_dict['depth_maps'] = self.get_depth_map(sample_idx)
-        if "image_depth" in get_item_list:
-            input_dict['camera_imgs'] = self.get_camera_image(sample_idx)
-            input_dict = self.point_depth_map(input_dict)
-            input_dict = self.fusion_depth_map(input_dict)
-            input_dict = self.image_depth_to_point(input_dict)
-            # input_dict = self.pseudo_point_select(input_dict)
-            show_point(input_dict["points"], input_dict["pseudo_points"])
 
         data_dict = self.prepare_data(data_dict=input_dict)
 
