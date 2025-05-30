@@ -1,0 +1,4 @@
+# ninja log v5
+0	3653	1717945677973531011	/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/build/temp.linux-x86_64-cpython-39/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/src/cpu/ms_deform_attn_cpu.o	a14088597cd8719
+1	10655	1717945684977572142	/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/build/temp.linux-x86_64-cpython-39/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/src/vision.o	9fbca97a93764295
+0	24730	1717945699041656972	/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/build/temp.linux-x86_64-cpython-39/home/tongji/weng/4DFusion/MonoDETR/lib/models/monodetr/ops/src/cuda/ms_deform_attn_cuda.o	11c66a1e24d521db
