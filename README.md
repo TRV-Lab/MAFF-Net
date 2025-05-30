@@ -32,7 +32,7 @@ Finally, fused BEV features are aggregated with clustered point cloud features a
 
 ## 📜 Getting Started
 
-step 1. Refer to [install.md](./docs/guidance/install.md) to install the environment.
+step 1. Refer to [install.md](./docs/guidance/Install.md) to install the environment.
 
 step 2. Refer to [dataset.md](./docs/guidance/dataset.md) to prepare View-of-delft (VoD) and TJ4DRadSet datasets.
 
