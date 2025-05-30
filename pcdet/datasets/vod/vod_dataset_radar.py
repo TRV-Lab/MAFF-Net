@@ -781,17 +781,20 @@ def create_vod_infos(dataset_cfg, class_names, data_path, save_path, workers=4):
 
 
 if __name__ == '__main__':
-    import yaml
-    from pathlib import Path
-    from easydict import EasyDict
+    if __name__ == '__main__':
+        import sys
 
-    dataset_cfg = EasyDict(
-        yaml.safe_load(open('/home/tongji/weng/4DFusion/Dual-Radar/tools/cfgs/dataset_configs/vod_dataset_radar.yaml')))
-    ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
-    create_vod_infos(
-        dataset_cfg=dataset_cfg,
-        class_names=['Car', 'Pedestrian', 'Cyclist'],
-        data_path=ROOT_DIR / 'data' / 'vod' / 'radar_5frames',
-        save_path=ROOT_DIR / 'data' / 'vod' / 'radar_5frames'
-    )
+        if sys.argv.__len__() > 1 and sys.argv[1] == 'create_vod_infos':
+            import yaml
+            from pathlib import Path
+            from easydict import EasyDict
+
+            dataset_cfg = EasyDict(yaml.safe_load(open(sys.argv[2])))
+            ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
+            create_vod_infos(
+                dataset_cfg=dataset_cfg,
+                class_names=['Car', 'Pedestrian', 'Cyclist'],
+                data_path=ROOT_DIR / 'data' / 'vod' / 'radar',
+                save_path=ROOT_DIR / 'data' / 'vod' / 'radar'
+            )
 # python -m pcdet.datasets.dual_radar.vod_dataset_radar create_vod_infos tools/cfgs/dataset_configs/vod_dataset_radar.yaml

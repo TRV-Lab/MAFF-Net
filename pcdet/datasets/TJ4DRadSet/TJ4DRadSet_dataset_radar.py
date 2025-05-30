@@ -909,27 +909,11 @@ if __name__ == '__main__':
 
         dataset_cfg = EasyDict(yaml.safe_load(open(sys.argv[2])))
         ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
-        # ROOT_DIR =(('/home/zhanghaoming/projects/VFF').resolve().parent).resolve()
         create_TJ_infos(
             dataset_cfg=dataset_cfg,
             class_names=['Car', 'Pedestrian', 'Cyclist', 'Truck'],
             data_path=ROOT_DIR / 'data' / 'TJ4DRadSet',
             save_path=ROOT_DIR / 'data' / 'TJ4DRadSet'
         )
-
-    # import yaml
-    # from pathlib import Path
-    # from easydict import EasyDict
-    #
-    # dataset_cfg = EasyDict(
-    #     yaml.safe_load(open('/home/tongji/weng/4DFusion/Dual-Radar/tools/cfgs/dataset_configs/vod_dataset_radar.yaml')))
-    # ROOT_DIR = (Path(__file__).resolve().parent / '../../../').resolve()
-    # # ROOT_DIR =(('/home/zhanghaoming/projects/VFF').resolve().parent).resolve()
-    # create_vod_infos(
-    #     dataset_cfg=dataset_cfg,
-    #     class_names=['Car', 'Pedestrian', 'Cyclist', 'Truck'],
-    #     data_path=ROOT_DIR / 'data' / 'TJ4DRadSet',
-    #     save_path=ROOT_DIR / 'data' / 'TJ4DRadSet'
-    # )
 
 # python -m pcdet.datasets.TJ4DRadSet.TJ4DRadSet_dataset_radar create_TJ_infos tools/cfgs/dataset_configs/TJ4DRadSet_dataset_radar.yaml
