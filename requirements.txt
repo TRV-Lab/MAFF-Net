@@ -1,7 +1,7 @@
 numpy
+requests
 llvmlite
 numba
-torch>=1.1
 tensorboardX
 easydict
 pyyaml
@@ -9,3 +9,4 @@ scikit-image
 tqdm
 torchvision
 SharedArray
+einops

@@ -22,7 +22,7 @@ from train_utils.train_utils import train_model
 
 def parse_config():
     parser = argparse.ArgumentParser(description='arg parser')
-    parser.add_argument('cfg_file', type=str, default=None, help='specify the config for training')  # 使用的配置文件的路径
+    parser.add_argument('--cfg_file', type=str, default=None, help='specify the config for training')  # 使用的配置文件的路径
 
     parser.add_argument('--batch_size', type=int, default=None, required=False,
                         help='batch size for training')  # 总的batch_size 多GPU会平均分给每个gpu但'Batch size should match the number of gpus'

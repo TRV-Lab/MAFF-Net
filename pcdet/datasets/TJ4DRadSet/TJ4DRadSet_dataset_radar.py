@@ -686,5 +686,3 @@ if __name__ == '__main__':
             data_path=ROOT_DIR / 'data' / 'TJ4DRadSet',
             save_path=ROOT_DIR / 'data' / 'TJ4DRadSet'
         )
-
-# python -m pcdet.datasets.TJ4DRadSet.TJ4DRadSet_dataset_radar create_TJ_infos tools/cfgs/dataset_configs/TJ4DRadSet_dataset_radar.yaml

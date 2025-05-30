@@ -794,7 +794,6 @@ if __name__ == '__main__':
             create_vod_infos(
                 dataset_cfg=dataset_cfg,
                 class_names=['Car', 'Pedestrian', 'Cyclist'],
-                data_path=ROOT_DIR / 'data' / 'vod' / 'radar',
-                save_path=ROOT_DIR / 'data' / 'vod' / 'radar'
+                data_path=ROOT_DIR / 'data' / 'vod' / 'radar_5frames',
+                save_path=ROOT_DIR / 'data' / 'vod' / 'radar_5frames'
             )
-# python -m pcdet.datasets.dual_radar.vod_dataset_radar create_vod_infos tools/cfgs/dataset_configs/vod_dataset_radar.yaml
