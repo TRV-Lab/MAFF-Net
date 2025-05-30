@@ -44,8 +44,8 @@ We offer the model on VoD and TJ4DRadset.
 
 |   Dataset    |                           Config                            |                                        Model Weights                                         | 
 |:------------:|:-----------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
-|     VoD      | [MAFF-Net_vod.yaml](tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml)  | [Link]() |
-|  TJ4DRadSet  |  [MAFF-Net_TJ.yaml](tools/cfgs/MAFF-Net/MAFF-Net_TJ.yaml)   | [Link]() |
+|     VoD      | [MAFF-Net_vod.yaml](tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml)  | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
+|  TJ4DRadSet  |  [MAFF-Net_TJ.yaml](tools/cfgs/MAFF-Net/MAFF-Net_TJ.yaml)   | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
 
 
 ## 🙏 Acknowledgment
