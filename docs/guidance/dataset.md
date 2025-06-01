@@ -15,7 +15,7 @@ ln -s /your_path/view_of_delft_PUBLIC/ ./data/VoD
 ```
 * Dataset directory structure:
 ```
-View-of-Delft-Dataset
+View-of-Delft
     ├── lidar                    # Contains LiDAR point clouds
     │   ├── ImageSets
     │   ├── training
