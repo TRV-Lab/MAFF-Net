@@ -21,4 +21,5 @@ python tools/test.py --cfg_file tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml --batch_si
 * Train with a single GPU:
 ```shell script
 python tools/train.py --cfg_file tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml
+python tools/train.py --cfg_file tools/cfgs/MAFF-Net/MAFF-Net_TJ4D.yaml
 ```

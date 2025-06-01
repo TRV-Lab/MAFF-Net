@@ -22,14 +22,20 @@ conda activate MAFFNet
 pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
 
-**c. Install the dependent libraries as follows:
+**c. Clone this repository.**
+```shell
+git clone https://github.com/TRV-Lab/MAFF-Net.git
+cd MAFF-Net/
+```
+
+**d. Install the dependent libraries as follows:**
 ```shell
 pip install -r requirements.txt
 pip install spconv-cu113
 pip install --upgrade packaging setuptools wheel
 ```
 
-**d. Install this `MAFF-Net` library and its dependent libraries by running the following command:
+**e. Install this `MAFF-Net` library and its dependent libraries by running the following command:**
 ```shell
 python setup.py develop
 ```

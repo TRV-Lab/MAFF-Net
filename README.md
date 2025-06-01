@@ -42,10 +42,10 @@ step 3. Refer to [train_and_test.md](./docs/guidance/train_and_test.md) for trai
 
 We offer the model on VoD and TJ4DRadset.
 
-|   Dataset    |                           Config                            |                                        Model Weights                                         | 
-|:------------:|:-----------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
-|     VoD      | [MAFF-Net_vod.yaml](tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml)  | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
-|  TJ4DRadSet  |  [MAFF-Net_TJ.yaml](tools/cfgs/MAFF-Net/MAFF-Net_TJ.yaml)   | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
+|   Dataset    |                            Config                            |                                        Model Weights                                         | 
+|:------------:|:------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
+|     VoD      |  [MAFF-Net_vod.yaml](tools/cfgs/MAFF-Net/MAFF-Net_vod.yaml)  | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
+|  TJ4DRadSet  | [MAFF-Net_TJ4D.yaml](tools/cfgs/MAFF-Net/MAFF-Net_TJ4D.yaml) | [Link](https://github.com/TRV-Lab/MAFF-Net/releases/download/checkpoints/vod2025010810360.pth) |
 
 
 ## 🙏 Acknowledgment
